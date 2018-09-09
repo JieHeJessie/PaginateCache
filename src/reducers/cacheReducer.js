@@ -1,50 +1,29 @@
 const MAX_PAGE_NUM = 8;
 
-const initialState = {
-	timestamps: {},
-	pages: {}
-}
-
-const removeOld = (state) => {
-	if(Object.keys(state.pages).length >= MAX_PAGE_NUM){
+const removeFurthese = (state, currentPage) => {
+	if(Object.keys(state).length >= MAX_PAGE_NUM){
 		var removeIndex = -1;
-		var minTimestamp = new Date().getTime();
-		Object.keys(state.timestamps).forEach((index, timestamp) => {
-			if(timestamp < minTimestamp){
-				removeIndex = index;
-				minTimestamp = timestamp;
+		var distance = 0;
+		Object.keys(state).forEach((pageIndex, _) => {
+			if(Math.abs(pageIndex - currentPage) > distance){
+				removeIndex = pageIndex;
+				distance = Math.abs(pageIndex - currentPage);
 			} 
 		})
 		if(removeIndex > 0){
-			console.log(`Remove page ${removeIndex} from cache`)
-			delete state.pages[removeIndex]
-			delete state.timestamps[removeIndex]
+			delete state[removeIndex]
 		}
 	}
 }
 
-const updateTimestamp = (state, index) => {
-	state.timestamps[index] = new Date().getTime();
-}
-
-const addNew = (state, pageIndex, newPage) => {
-	console.log(`Add page ${pageIndex} to cache`)
-	state.timestamps[pageIndex] = new Date().getTime();
-	state.pages[pageIndex] = newPage;
-}
-
-export default function reducer(state = initialState, action){
-	window.cache = state;
+export default function reducer(state = {}, action){
 	switch (action.type) {
-		case "FETCH_PAGE_FULFILLED":
-		case "FETCH_PRE_FULFILLED":{
-			removeOld(state);
-			addNew(state, action.index, action.cards)
-			return {...state};
-		}
-		case "UPDATE_TIMESTAMP":{
-			updateTimestamp(state, action.index);
-			return {...state};
+		case "FETCH_PAGE_FULFILLED":{
+			removeFurthese(state, action.currentPage);
+			return {
+				...state,
+				[action.index] : action.cards
+			};
 		}
 		default:
 			return state;

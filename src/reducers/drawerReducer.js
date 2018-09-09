@@ -16,6 +16,7 @@ export default function reducer(state = initialState, action){
 				open: true,
 				card: action.card
 			}
+		default:
+			return state;
 	}
-	return state;
 }

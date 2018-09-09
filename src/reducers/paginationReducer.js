@@ -1,5 +1,4 @@
 const initialState = {
-	lastPage: 0,
 	currentPage: 1,
 	totalPages: 1
 }
@@ -15,9 +14,9 @@ export default function reducer(state = initialState, action){
 		case "SHOW_PAGE":
 			return{
 				...state,
-				lastPage: state.currentPage == action.index ? state.lastPage : state.currentPage,
 				currentPage: action.index
 			}
+		default:
+			return state;
 	}
-	return state;
 }

@@ -5,10 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CardBasic from "./CardBasic"
 import '../style/card-grid.css'
 
-
-const divStyle = {
-  color: 'blue',
-};
 export class CardsGrid extends React.Component {
 	constructor(props){
 		super(props);
@@ -37,10 +33,8 @@ export class CardsGrid extends React.Component {
                     ))}
                 </Grid>
             </Grid>)
+            )  
         )
-            
-        )
-		
 	}
 
 	render(){

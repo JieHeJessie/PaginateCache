@@ -6,12 +6,10 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import CardDrawer from "./CardDrawer";
 import '../style/card-basic.css';
 
-
 export class CardBasic extends React.Component {
-	constructor(props){
+	constructor(props) {
 		super(props);
 		this.state = {
 			card: props.card,
@@ -27,45 +25,44 @@ export class CardBasic extends React.Component {
 		});
 	}
 
-	showDetailInDrawer(){
+	showDetailInDrawer() {
 		this.props.open(this.state.card);
 	}
-    
 
-	render(){
-		return(
+
+	render() {
+		return (
 			<div>
-                <Card className="card">
-                  <CardContent>
-                    <Typography color="textSecondary">
-                      {this.state.card == null ? "No Details" : this.state.card.coreData.state}
-                    </Typography>
-                    <Typography variant="headline" component="h2">
-                      {this.state.card == null ? "No Details" : this.state.card.coreData.number}
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Application: {this.state.card == null ? "No Details" : this.state.card.coreData.application}
-                    </Typography>
-                    <Typography color="textSecondary">
-                      Assignee: {this.state.card == null ? "No Details" : this.state.card.coreData.assignee}
-                    </Typography>
-                    <Typography component="p">
-                      {this.state.card == null ? "No Details" : this.state.card.coreData.shortDescription}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button onClick={this.showDetailInDrawer} size="small">Learn More</Button>
-                  </CardActions>
-                </Card>
+				<Card className="card">
+					<CardContent>
+						<Typography color="textSecondary">
+							{this.state.card == null ? "No Details" : this.state.card.coreData.state}
+						</Typography>
+						<Typography variant="headline" component="h2">
+							{this.state.card == null ? "No Details" : this.state.card.coreData.number}
+						</Typography>
+						<Typography color="textSecondary">
+							Application: {this.state.card == null ? "No Details" : this.state.card.coreData.application}
+						</Typography>
+						<Typography color="textSecondary">
+							Assignee: {this.state.card == null ? "No Details" : this.state.card.coreData.assignee}
+						</Typography>
+						<Typography component="p">
+							{this.state.card == null ? "No Details" : this.state.card.coreData.shortDescription}
+						</Typography>
+					</CardContent>
+					<CardActions>
+						<Button onClick={this.showDetailInDrawer} size="small">Learn More</Button>
+					</CardActions>
+				</Card>
 			</div>
-			);
+		);
 	}
 }
 
-const mapStateToProps = (store) => ({})
-
+const mapStateToProps = () => ({})
 const mapDispatchToProps = (dispatch) => ({
-	open : (card) => dispatch(DrawerActions.open(card))
+	open: (card) => dispatch(DrawerActions.open(card))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CardBasic)

@@ -2,12 +2,11 @@ import React from "react"
 import { connect } from "react-redux"
 import { debounce } from "throttle-debounce";
 import Button from '@material-ui/core/Button';
-import * as PageActions from "../actions/pageActions"
 import Grid from '@material-ui/core/Grid';
+import * as PageActions from "../actions/pageActions"
 import '../style/pagination.css'
 
-const PREDICT_NEXT = 3;
-const PREDICT_BEFORE = 1;
+const PREDICT_PAGE_NUM = 3;
 
 export class Pagination extends React.Component {
 	constructor(props){
@@ -15,12 +14,11 @@ export class Pagination extends React.Component {
 		this.state = {
 			cachePages: props.cachePages,
 			currentPage: props.currentPage,
-			lastPage: props.lastPage,
 			totalPages : props.totalPages,
 			nextLoad: props.currentPage
 		}
 
-		this.fetchPredictPages = this.fetchPredictPages.bind(this);
+		this.fetchPredPage = this.fetchPredPage.bind(this);
 		this.loadPageDebounce = debounce(500, this.loadPage.bind(this));
 	}
 
@@ -28,7 +26,6 @@ export class Pagination extends React.Component {
 		this.setState({
 			cachePages: newProps.cachePages,
 			currentPage: newProps.currentPage,
-			lastPage: newProps.lastPage,
 			totalPages : newProps.totalPages
 		});		
 	}
@@ -38,27 +35,30 @@ export class Pagination extends React.Component {
 	}
 
 	componentDidUpdate(_, prevState){
-		if (this.state.currentPage != prevState.currentPage || 
-			this.state.totalPages != prevState.totalPages) {
-			this.fetchPredictPages()
+		if (this.state.currentPage !== prevState.currentPage || 
+			this.state.totalPages !== prevState.totalPages) {
+			this.fetchPredPage()
 		}
 	}
 
-	fetchPredictPages(){
-		var increase = this.state.lastPage < this.state.currentPage ? 1 : -1;
-		for (var i = 1; i <= PREDICT_NEXT; i++) {
-			var predictPage = this.state.currentPage + i*increase;
-			if(predictPage > 0 && predictPage <= this.state.totalPages){
-				this.props.fetchPage(predictPage, this.state.cachePages)
+	fetchPredPage(){
+		for (var i = 0; i <= PREDICT_PAGE_NUM*2; i++) {
+			var predictPage = this.state.currentPage - PREDICT_PAGE_NUM + i;
+			if(predictPage > 0 && 
+				predictPage <= this.state.totalPages &&
+				!(predictPage in this.state.cachePages)){
+					this.props.fetchPredPage(predictPage, this.state.currentPage)
 			}
 		}
+	}
 
-		for (var d = 1; d <= PREDICT_BEFORE; d++) {
-			var predictDesc = this.state.currentPage - d*increase;
-			if(predictDesc > 0 && predictDesc <= this.state.totalPages){
-				this.props.fetchPage(predictDesc, this.state.cachePages)
-			}
-		}
+	willLoadPage(page){
+		page = page < 1 ? 1 : page;
+		page = page > this.state.totalPages ? this.state.totalPages : page;
+		this.setState({
+			nextLoad: page
+		})
+		this.loadPageDebounce(page, this.state.cachePages);
 	}
 
 	loadPage(page){
@@ -71,8 +71,8 @@ export class Pagination extends React.Component {
 			<div className="footer">				
                 <Grid container justify="center" spacing={40}>
                     <Grid item>
-                        <Button disabled={this.state.currentPage <= 1} 
-					onClick={() => this.loadPageDebounce(this.state.nextLoad -= 1)}>
+                        <Button disabled={this.state.nextLoad <= 1} 
+					onClick={() => this.willLoadPage(this.state.nextLoad - 1)}>
 						Back
 					</Button>
                     </Grid>
@@ -80,8 +80,8 @@ export class Pagination extends React.Component {
                         <div className="page-indicator">Page: {this.state.nextLoad} of {this.state.totalPages}</div>
                     </Grid>
                     <Grid item>
-                        <Button disabled={this.state.currentPage >= this.state.totalPages} 
-					onClick={() => this.loadPageDebounce(this.state.nextLoad += 1)}>
+                        <Button disabled={this.state.nextLoad >= this.state.totalPages} 
+					onClick={() => this.willLoadPage(this.state.nextLoad + 1)}>
 						Next
 					</Button>
                     </Grid>
@@ -92,19 +92,14 @@ export class Pagination extends React.Component {
 }
 
 const mapStateToProps = (store) => ({
-    cachePages : store.cache.pages,
+    cachePages : store.cache,
     currentPage : store.pagination.currentPage,
-    lastPage: store.pagination.lastPage,
     totalPages : store.pagination.totalPages
-    
 })
 
 const mapDispatchToProps = (dispatch) => ({
 	loadPage : (page, cachePages) => dispatch(PageActions.loadPage(page, cachePages)),
-	fetchPage : (page, cachePages) => dispatch(PageActions.fetchPage(page, cachePages)),
-	willLoad : () => dispatch(PageActions.willLoad())
+	fetchPredPage : (page, current) => dispatch(PageActions.fetchPredPage(page, current)),
 })
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pagination)

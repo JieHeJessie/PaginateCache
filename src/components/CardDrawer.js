@@ -1,11 +1,9 @@
 import React from "react"
-import Button from '@material-ui/core/Button'
 import { connect } from "react-redux"
 import * as DrawerActions from "../actions/drawerActions"
 import List from '@material-ui/core/List';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import '../style/card-drawer.css'
 
