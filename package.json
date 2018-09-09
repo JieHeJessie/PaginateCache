@@ -13,7 +13,8 @@
     "redux-logger": "^3.0.6",
     "redux-mock-store": "^1.5.3",
     "redux-promise-middleware": "^5.1.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "throttle-debounce": "^2.0.1"
   },
   "devDependencies": {
     "node-sass": "^4.7.2",

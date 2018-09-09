@@ -3,6 +3,8 @@ import { connect } from "react-redux"
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import CardBasic from "./CardBasic"
+import '../style/card-grid.css'
+
 
 const divStyle = {
   color: 'blue',
@@ -44,7 +46,7 @@ export class CardsGrid extends React.Component {
 	render(){
         if(this.state.fetching){
            return(
-               <div container justify="center">
+               <div className="loading">
                    <CircularProgress size={50} />
                    <h1>Loading, please wait</h1>
                </div>
@@ -52,7 +54,7 @@ export class CardsGrid extends React.Component {
                
         }
 		return(
-			<div>               
+			<div className="cards">               
                 {this.cardsGridLayout()}
 			</div>
 			);

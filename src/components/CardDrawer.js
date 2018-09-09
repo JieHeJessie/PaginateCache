@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+import '../style/card-drawer.css'
 
 
 export class CardDrawer extends React.Component {
@@ -35,64 +36,46 @@ export class CardDrawer extends React.Component {
             var serviceData = this.state.card.serviceData;
             
 			return (
-				<div>					
+				<div >					
                     <Drawer anchor="right" open={this.state.open} onClose={() => this.props.close()}>
                           <div tabIndex={0} role="button" onClick={() => this.props.close()} onKeyDown={() => this.props.close()}>
-                              <List component="nav">
-                                <ListItem>{coreData.number ? coreData.number : "No details"}</ListItem>
+                              <List className="drawer" component="nav">
+                                <ListItem className="drawer-title">{coreData.number ? coreData.number : "No details"}</ListItem>
                                 <ListItem>
-                                    <ListItemText>Assigned to</ListItemText>
-                                    <ListItemText>
-                                        {coreData.assignee ? coreData.assignee : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="Assigned to"/>
+                                    <ListItemText primary={coreData.assignee ? coreData.assignee : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>Short description</ListItemText>
-                                    <ListItemText>
-                                        {coreData.shortDescription ? coreData.shortDescription : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="Short description"/>
+                                    <ListItemText primary={coreData.shortDescription ? coreData.shortDescription : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>Application</ListItemText>
-                                    <ListItemText>
-                                        {coreData.application ? coreData.application : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="Application"/>
+                                    <ListItemText primary={coreData.application ? coreData.application : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>made_sla</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.made_sla ? serviceData.made_sla : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="made_sla"/>
+                                    <ListItemText primary={serviceData.made_sla ? serviceData.made_sla : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>upon_reject</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.upon_reject ? serviceData.upon_reject : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="upon_reject"/>
+                                    <ListItemText primary={serviceData.upon_reject ? serviceData.upon_reject : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>opened_by</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.opened_by ? serviceData.opened_by : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="opened_by"/>
+                                    <ListItemText primary={serviceData.opened_by ? serviceData.opened_by : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>priority</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.priority ? serviceData.priority : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="priority"/>
+                                    <ListItemText primary={serviceData.priority ? serviceData.priority : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>activity_due</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.activity_due ? serviceData.activity_due : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="activity_due"/>
+                                    <ListItemText primary={serviceData.activity_due ? serviceData.activity_due : "No details"}/>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemText>approval</ListItemText>
-                                    <ListItemText>
-                                        {serviceData.approval ? serviceData.approval : "No details"}
-                                    </ListItemText>
+                                    <ListItemText primary="approval"/>
+                                    <ListItemText primary={serviceData.approval ? serviceData.approval : "No details"}/>
                                 </ListItem>
                               </List>                          
                           </div>

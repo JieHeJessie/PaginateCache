@@ -1,0 +1,10 @@
+.drawer{
+    width: 500px;
+}
+.drawer span{
+    width: 150px;
+}
+.drawer-title{
+    font-weight: bold;
+    font-size:1.5rem;
+}

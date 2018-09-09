@@ -1,8 +1,10 @@
 import React from "react"
 import { connect } from "react-redux"
+import { debounce } from "throttle-debounce";
 import Button from '@material-ui/core/Button';
 import * as PageActions from "../actions/pageActions"
 import Grid from '@material-ui/core/Grid';
+import '../style/pagination.css'
 
 const PREDICT_NEXT = 3;
 const PREDICT_BEFORE = 1;
@@ -14,11 +16,12 @@ export class Pagination extends React.Component {
 			cachePages: props.cachePages,
 			currentPage: props.currentPage,
 			lastPage: props.lastPage,
-			totalPages : props.totalPages
+			totalPages : props.totalPages,
+			nextLoad: props.currentPage
 		}
 
 		this.fetchPredictPages = this.fetchPredictPages.bind(this);
-		this.loadPage = this.loadPage.bind(this);
+		this.loadPageDebounce = debounce(500, this.loadPage.bind(this));
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -30,7 +33,11 @@ export class Pagination extends React.Component {
 		});		
 	}
 
-	componentDidUpdate(prevProps, prevState){
+	componentDidMount(){
+		this.props.loadPage(this.state.currentPage, this.state.cachePages);
+	}
+
+	componentDidUpdate(_, prevState){
 		if (this.state.currentPage != prevState.currentPage || 
 			this.state.totalPages != prevState.totalPages) {
 			this.fetchPredictPages()
@@ -60,27 +67,23 @@ export class Pagination extends React.Component {
 
 
 	render(){
-		if(!(this.state.currentPage in this.state.cachePages)){
-			this.loadPage(this.state.currentPage);
-		}
-
 		return(
-			<div>				
+			<div className="footer">				
                 <Grid container justify="center" spacing={40}>
                     <Grid item>
                         <Button disabled={this.state.currentPage <= 1} 
-                        onClick={() => this.loadPage(this.state.currentPage - 1)}>
-                            Back
-                        </Button>
+					onClick={() => this.loadPageDebounce(this.state.nextLoad -= 1)}>
+						Back
+					</Button>
                     </Grid>
                     <Grid item>
-                        <div className="page-indicator">Page: {this.state.currentPage} of {this.state.totalPages}</div>
+                        <div className="page-indicator">Page: {this.state.nextLoad} of {this.state.totalPages}</div>
                     </Grid>
                     <Grid item>
                         <Button disabled={this.state.currentPage >= this.state.totalPages} 
-                        onClick={() => this.loadPage(this.state.currentPage + 1)}>
-                            Next
-                        </Button>
+					onClick={() => this.loadPageDebounce(this.state.nextLoad += 1)}>
+						Next
+					</Button>
                     </Grid>
                 </Grid>
 			</div>
@@ -89,7 +92,7 @@ export class Pagination extends React.Component {
 }
 
 const mapStateToProps = (store) => ({
-    cachePages : store.cache,
+    cachePages : store.cache.pages,
     currentPage : store.pagination.currentPage,
     lastPage: store.pagination.lastPage,
     totalPages : store.pagination.totalPages
@@ -98,7 +101,8 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	loadPage : (page, cachePages) => dispatch(PageActions.loadPage(page, cachePages)),
-	fetchPage : (page, cachePages) => dispatch(PageActions.fetchPage(page, cachePages))
+	fetchPage : (page, cachePages) => dispatch(PageActions.fetchPage(page, cachePages)),
+	willLoad : () => dispatch(PageActions.willLoad())
 })
 
 

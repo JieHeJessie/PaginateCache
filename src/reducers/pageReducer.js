@@ -5,6 +5,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action){
 	switch (action.type) {
+		case "WILL_LOAD":
 		case "FETCHING_PAGE":{
 			return {
 				...state,

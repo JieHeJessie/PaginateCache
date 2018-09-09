@@ -7,6 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardDrawer from "./CardDrawer";
+import '../style/card-basic.css';
 
 
 export class CardBasic extends React.Component {
@@ -34,7 +35,7 @@ export class CardBasic extends React.Component {
 	render(){
 		return(
 			<div>
-                <Card>
+                <Card className="card">
                   <CardContent>
                     <Typography color="textSecondary">
                       {this.state.card == null ? "No Details" : this.state.card.coreData.state}

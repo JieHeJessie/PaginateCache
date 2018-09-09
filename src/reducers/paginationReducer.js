@@ -5,6 +5,7 @@ const initialState = {
 }
 
 export default function reducer(state = initialState, action){
+	window.pagination = state;
 	switch (action.type) {
 		case "SET_CARDS_TOTAL":
 			return{
