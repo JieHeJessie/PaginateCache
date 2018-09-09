@@ -1,0 +1,11 @@
+.card{
+    margin: .5rem !important;
+}
+
+.card p{
+    font-size: 1rem;
+}
+
+.card h3{
+    font-size: 1rem;
+}
