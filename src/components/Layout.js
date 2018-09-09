@@ -1,5 +1,7 @@
 import React from "react"
-import CardGrid from "./CardGrid"
+
+import CardsGrid from "./CardsGrid"
+import CardDrawer from "./CardDrawer"
 import Pagination from "./Pagination"
 
 export default class Layout extends React.Component {
@@ -7,10 +9,14 @@ export default class Layout extends React.Component {
 		return(
 			<div>
 				<div className="grid-container">
-					<CardGrid />
+					<CardsGrid />
 				</div>
+
 				<div>
 					<Pagination />
+				</div>
+				<div>
+					<CardDrawer />
 				</div>
 			</div>
 			);

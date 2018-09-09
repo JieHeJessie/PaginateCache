@@ -1,15 +1,21 @@
 const initialState = {
-	showDrawer: false,
-	cardDetails: {}
+	open: false,
+	card: {}
 }
 
 export default function reducer(state = initialState, action){
 	switch (action.type) {
-		case label_1:
-			// statements_1
-			break;
-		default:
-			// statements_def
-			break;
+		case "CLOSE_DRAWER":
+			return {
+				...state,
+				open: false
+			}
+		case "OPEN_DRAWER":
+			return {
+				...state,
+				open: true,
+				card: action.card
+			}
 	}
+	return state;
 }

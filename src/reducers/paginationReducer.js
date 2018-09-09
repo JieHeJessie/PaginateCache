@@ -14,7 +14,7 @@ export default function reducer(state = initialState, action){
 		case "SHOW_PAGE":
 			return{
 				...state,
-				lastPage: state.currentPage,
+				lastPage: state.currentPage == action.index ? state.lastPage : state.currentPage,
 				currentPage: action.index
 			}
 	}
