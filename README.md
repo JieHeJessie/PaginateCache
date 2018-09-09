@@ -48,4 +48,6 @@ if (actual-cache.length  >= 8)
   Delete the page that is farthest from the current page and add the content of the new prediction.
 ```
 
+## Detect clicking too fast
 
+The project used "throttle-debounce" package to detect. If the page is not in the cache, the page will show up "Loading, please wait" with progress indicator.
